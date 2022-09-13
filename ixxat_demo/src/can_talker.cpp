@@ -13,12 +13,15 @@ class UsbCanTalker : public rclcpp::Node
 		UsbCanTalker()
 		: Node("UsbCan_Talker")
 		{
+			this->declare_parameter<std::string>("topic_tx", "can_tx");
+			this->get_parameter("topic_tx", param_topic_tx_str);
 			pub_canMessage_ = this->create_publisher<ixxat_interfaces::msg::CanMessage>(
-				"can_TxMsg", 10);
+				param_topic_tx_str, 10);
       		timer_ = this->create_wall_timer(
         		500ms, std::bind(&UsbCanTalker::timer_callback, this));
 		}
 	private:
+		std::string param_topic_tx_str;
 		rclcpp::Publisher<ixxat_interfaces::msg::CanMessage>::SharedPtr pub_canMessage_;
 		void timer_callback()
 		{
@@ -35,9 +38,10 @@ class UsbCanTalker : public rclcpp::Node
 		void cb_newCanMessage(const ixxat_interfaces::msg::CanMessage::SharedPtr msg) const
 		{
 			RCLCPP_INFO(this->get_logger(), "Send CAN ID:%d, DLC:%d", msg->can_id, msg->can_dlc);
-			int length = static_cast<int>(msg->can_dlc);
+			int length = static_cast<int>(msg->can_dlc);	
 			for(int i =0; i < length; i++) {
 				printf("%d ", msg->data_array[i]);
+				
 			}
 			printf("\r\n");
 		}
