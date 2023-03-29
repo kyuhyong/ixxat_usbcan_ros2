@@ -3,7 +3,7 @@
 This package is about ROS 2 implementation of USB-to-CAN V2 device.
 ## Requirements
 
-This packages is only tested with USB-to-CAN V2 from IXXAT.
+This packages is only tested with USB-to-CAN V2 compact from IXXAT.
 
 
 ## Device Driver Installation
